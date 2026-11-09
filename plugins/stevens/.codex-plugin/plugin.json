@@ -1,0 +1,23 @@
+{
+  "name": "stevens",
+  "description": "Shared agent skills for the Stevens Group: dragonair and cluster job instructions, thermo-nuclear code review, and plan stress-testing",
+  "author": {
+    "name": "The Stevens Group",
+    "url": "https://github.com/The-Stevens-Group"
+  },
+  "homepage": "https://github.com/The-Stevens-Group/sg-agents-skills",
+  "repository": "https://github.com/The-Stevens-Group/sg-agents-skills",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Stevens Group",
+    "shortDescription": "Dragonair jobs, cluster instructions and strict code review",
+    "developerName": "The Stevens Group",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Write"],
+    "defaultPrompt": [
+      "Submit this training run on dragonair",
+      "Why is my job still pending?",
+      "Run a thermo-nuclear review of this branch"
+    ]
+  }
+}

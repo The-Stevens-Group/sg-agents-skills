@@ -1,0 +1,16 @@
+# Copy this file into a repo's .github/workflows/ folder to turn on automatic review.
+# The repo also needs an ANTHROPIC_API_KEY secret, set on the repo or the org.
+name: Thermo-nuclear review
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
+
+jobs:
+  review:
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: The-Stevens-Group/sg-agents-skills/.github/workflows/thermo-nuclear-review.yml@main
+    secrets:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

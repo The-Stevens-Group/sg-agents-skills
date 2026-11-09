@@ -1,0 +1,14 @@
+{
+  "extraKnownMarketplaces": {
+    "stevens-group": {
+      "source": {
+        "source": "github",
+        "repo": "The-Stevens-Group/sg-agents-skills"
+      },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "stevens@stevens-group": true
+  }
+}

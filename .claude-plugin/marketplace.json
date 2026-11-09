@@ -1,0 +1,14 @@
+{
+  "name": "stevens-group",
+  "description": "Shared agent skills for the Stevens Group",
+  "owner": {
+    "name": "The Stevens Group"
+  },
+  "plugins": [
+    {
+      "name": "stevens",
+      "source": "./plugins/stevens",
+      "description": "Dragonair and cluster job instructions, thermo-nuclear code review, and plan stress-testing"
+    }
+  ]
+}
