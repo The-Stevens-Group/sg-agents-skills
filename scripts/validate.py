@@ -74,8 +74,13 @@ def check_skills() -> None:
             failures.append(f"{skill_dir.name}: frontmatter name must match its folder")
         if not fields.get("description"):
             failures.append(f"{skill_dir.name}: needs a description")
-        if "disable-model-invocation" in fields:
-            failures.append(f"{skill_dir.name}: Codex rejects disable-model-invocation")
+        codex_policy = skill_dir / "agents" / "openai.yaml"
+        codex_manual = codex_policy.exists() and "allow_implicit_invocation: false" in codex_policy.read_text(encoding="utf-8")
+        if (fields.get("disable-model-invocation") == "true") != codex_manual:
+            failures.append(
+                f"{skill_dir.name}: disable-model-invocation: true (Claude) and "
+                "agents/openai.yaml with allow_implicit_invocation: false (Codex) must be set together"
+            )
         for reference in sorted(set(SKILL_FILE_REF.findall(text))):
             if not (skill_dir / reference).exists():
                 failures.append(f"{skill_dir.name}: SKILL.md names a missing file, {reference}")
