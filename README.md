@@ -9,6 +9,10 @@ Shared agent skills for the Stevens Group, for Claude Code, Codex and other codi
 | `grill-me` | Interviews you to stress-test a plan or design |
 | `untangle-codebase` | Refactors a whole codebase so pieces that change together sit together. Long and thorough, so it only runs when you call it |
 
+The package now also includes `claude`, `cleanup`, `doi2bib`, `edison`, `handoff`,
+`monitor-jobs`, `notion-upload`, `open-pr`, `polish-pr` and `submit-wandb-job`.
+They replace the corresponding Softnano skills under the `stevens` namespace.
+
 ## Install
 
 On dragonair, you may not need to do anything. See [On dragonair](#on-dragonair).
@@ -64,10 +68,26 @@ To review a repo's PRs automatically, copy [`.github/workflows/thermo-nuclear.ym
 
 1. Add `plugins/stevens/skills/<skill-name>/SKILL.md`, with `name` and `description` in the frontmatter.
 2. Run `python3 scripts/validate.py`.
-3. Open a PR. See [`AGENTS.md`](AGENTS.md) for the rules.
+3. Bump both plugin manifests by a minor version (or major for breaking changes), and update `CHANGELOG.md`. Every change needs a release, including documentation changes.
+4. Run `python3 scripts/validate.py --base origin/main`, then open a PR. After merge, CI publishes the matching tag and GitHub release. See [`AGENTS.md`](AGENTS.md) for the rules.
 
 ## Origin
 
 `cluster-instructions`, `thermo-nuclear-code-quality-review` and `grill-me` were copied from [softnanolab/softnano-plugins](https://github.com/softnanolab/softnano-plugins) at commit `fa058b6`. `thermo-nuclear-code-quality-review` and `grill-me` are unchanged. `cluster-instructions` adds dragonair and removes SoftNano's own accounts, aliases and workstation.
 
 `untangle-codebase` is by Maze, from [caldoai/skills](https://github.com/caldoai/skills/blob/main/skills/untangle-codebase/SKILL.md) at commit `f3cf477`, under the MIT licence in its folder. It's unchanged apart from `agents/openai.yaml`, which stops Codex loading it automatically.
+
+## Moving from Softnano
+
+Install `stevens@stevens-group` before disabling `softnano@softnanolab-plugins` in each
+agent. All thirteen Softnano skill names are available, plus `untangle-codebase`.
+Use `/stevens:<skill>` in Claude Code and `$stevens:<skill>` in Codex. Disable the old
+plugin rather than loading both namespaces; cached files may remain for rollback.
+Restart or start a new session to refresh the skill catalog. Each user should migrate
+their own settings; this does not change another user's active session or jobs.
+
+The ten additional workflows were migrated from the installed Softnano 2.1.0 package.
+SG adaptations replace old namespace/cache paths, remove host-specific tool requirements,
+route scheduler detection through `cluster-instructions`, and keep handoff secrets out
+of command output. The source repository currently has no top-level licence file;
+this migration preserves its attribution and does not assert a new licence for it.

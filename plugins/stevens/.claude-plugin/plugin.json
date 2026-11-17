@@ -1,9 +1,10 @@
 {
   "name": "stevens",
-  "description": "Shared agent skills for the Stevens Group: dragonair and cluster job instructions, thermo-nuclear code review, and plan stress-testing",
+  "description": "Shared Stevens Group skills for code review, refactoring, research and HPC workflows",
   "author": {
     "name": "The Stevens Group"
   },
   "homepage": "https://github.com/The-Stevens-Group/sg-agents-skills",
-  "repository": "https://github.com/The-Stevens-Group/sg-agents-skills"
+  "repository": "https://github.com/The-Stevens-Group/sg-agents-skills",
+  "version": "0.2.0"
 }

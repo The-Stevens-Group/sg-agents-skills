@@ -3,13 +3,37 @@ name: Validate
 on:
   pull_request:
   push:
-    branches:
-      - main
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - run: python3 scripts/validate.py
-      - run: bash -n machine-setup/dragonair/install.sh
+        with:
+          fetch-depth: 0
+      - name: Validate package and release increment
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: python3 scripts/validate.py --base "$BASE_SHA"
+      - run: python3 -m unittest discover -s scripts -p 'test_*.py'
+      - run: bash -n machine-setup/dragonair/install.sh plugins/stevens/skills/edison/scripts/edison_query.sh
+
+  release:
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+      - name: Publish versioned release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          version=$(python3 -c 'import json; print(json.load(open("plugins/stevens/.codex-plugin/plugin.json"))["version"])')
+          gh release create "v$version" --target "$RELEASE_SHA" --title "v$version" --notes-file CHANGELOG.md

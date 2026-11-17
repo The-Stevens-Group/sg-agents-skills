@@ -8,7 +8,7 @@
     {
       "name": "stevens",
       "source": "./plugins/stevens",
-      "description": "Dragonair and cluster job instructions, thermo-nuclear code review, and plan stress-testing"
+      "description": "Code review, refactoring, research and HPC workflows for the Stevens Group"
     }
   ]
 }
