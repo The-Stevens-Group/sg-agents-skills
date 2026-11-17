@@ -3,8 +3,10 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -40,6 +42,25 @@ def frontmatter(text: str) -> dict[str, str]:
     return fields
 
 
+def parse_version(value: str) -> tuple[int, int, int]:
+    if not re.fullmatch(r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.0", value):
+        raise ValueError("version must be major.minor.0 (no patch-only releases)")
+    major, minor, patch = value.split(".")
+    return int(major), int(minor), int(patch)
+
+
+def check_version_bump(base: str) -> None:
+    manifest = "plugins/stevens/.codex-plugin/plugin.json"
+    previous = json.loads(subprocess.check_output(
+        ["git", "show", f"{base}:{manifest}"], cwd=REPO, text=True
+    ))
+    # Releases before versioned manifests used the repository's v0.1.0 tag.
+    old = parse_version(previous.get("version", "0.1.0"))
+    new = parse_version(load_json(REPO / manifest)["version"])
+    if not (new == (old[0], old[1] + 1, 0) or new == (old[0] + 1, 0, 0)):
+        failures.append(f"bump the minor or major version from {'.'.join(map(str, old))}")
+
+
 def check_packaging() -> None:
     claude_market = load_json(REPO / ".claude-plugin" / "marketplace.json")
     codex_market = load_json(REPO / ".agents" / "plugins" / "marketplace.json")
@@ -55,8 +76,17 @@ def check_packaging() -> None:
         name = manifest.relative_to(REPO)
         if data.get("name") != "stevens":
             failures.append(f"{name}: the plugin must be named stevens")
-        if "version" in data:
-            failures.append(f"{name}: leave out version, so users get every commit")
+        try:
+            parse_version(data.get("version", ""))
+        except ValueError as error:
+            failures.append(f"{name}: {error}")
+    claude = load_json(PLUGIN / ".claude-plugin/plugin.json")
+    codex = load_json(PLUGIN / ".codex-plugin/plugin.json")
+    if claude.get("version") != codex.get("version"):
+        failures.append("both plugin manifests must have the same version")
+    changelog = (REPO / "CHANGELOG.md").read_text(encoding="utf-8")
+    if not changelog.startswith(f"# Changelog\n\n## {codex.get('version')}\n"):
+        failures.append("CHANGELOG.md must begin with the current version")
 
 
 def check_skills() -> None:
@@ -100,7 +130,15 @@ def check_public_content() -> None:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--base", help="Git ref before this change; require a major/minor bump")
+    args = parser.parse_args()
     check_packaging()
+    if args.base:
+        try:
+            check_version_bump(args.base)
+        except (ValueError, KeyError, subprocess.CalledProcessError) as error:
+            failures.append(f"cannot validate version bump: {error}")
     check_skills()
     check_public_content()
     if failures:
