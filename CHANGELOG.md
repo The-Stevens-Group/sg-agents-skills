@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0
+
+- License the Stevens Group's own work under MIT. Copied skills keep their authors' terms, as the README's Licence section explains.
+- Note that this repo's automatic PR review is turned off until there's an API key.
+
 ## 0.3.0
 
 - Add `socratic-tutor` from Jane Street's [agent_skills](https://github.com/janestreet/agent_skills) (MIT), unchanged with its licence. It teaches a topic by asking questions, tracks a 0-5 skill map and ends with a final assessment.

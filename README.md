@@ -58,6 +58,8 @@ A user's own Codex config can override `developer_instructions`.
 
 ## Automatic PR review
 
+This repo's own review is turned off on GitHub until there's an API key. Turn it back on with `gh workflow enable "Thermo-nuclear review"`.
+
 To review a repo's PRs automatically, copy [`.github/workflows/thermo-nuclear.yml`](.github/workflows/thermo-nuclear.yml) into its `.github/workflows/` folder. The repo also needs an `ANTHROPIC_API_KEY` secret, set on the repo or the org.
 
 - **When it runs:** when a PR is opened, reopened, marked ready for review or pushed to. It skips drafts, so people can iterate in draft at no cost.
@@ -79,6 +81,13 @@ To review a repo's PRs automatically, copy [`.github/workflows/thermo-nuclear.ym
 `untangle-codebase` is by Maze, from [caldoai/skills](https://github.com/caldoai/skills/blob/main/skills/untangle-codebase/SKILL.md) at commit `f3cf477`, under the MIT licence in its folder. It's unchanged apart from `agents/openai.yaml`, which stops Codex loading it automatically.
 
 `socratic-tutor` is by Jane Street, from [janestreet/agent_skills](https://github.com/janestreet/agent_skills/tree/main/socratic-tutor) at commit `469868f`, under the MIT licence in its folder. It's unchanged.
+
+## Licence
+
+The Stevens Group's own work here is under the [MIT licence](LICENSE), so anyone can use, copy and change it. Skills copied from elsewhere keep their authors' terms:
+
+- `untangle-codebase` and `socratic-tutor` are MIT, with each author's licence in the skill's folder.
+- The skills from softnano-plugins came from a repository with no licence. The MIT licence covers the Stevens Group's changes to them, not the original text. That needs the softnano authors' permission.
 
 ## Moving from Softnano
 
