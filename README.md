@@ -7,6 +7,7 @@ Shared agent skills for the Stevens Group, for Claude Code, Codex and other codi
 | `cluster-instructions` | Detects the machine you're on and loads its job instructions. Covers dragonair, Imperial CX3/HX1, UCL MMM Young and Isambard AI |
 | `thermo-nuclear-code-quality-review` | Runs a very strict maintainability review of a branch or PR |
 | `grill-me` | Interviews you to stress-test a plan or design |
+| `socratic-tutor` | Teaches you a topic by asking questions, one at a time, until you've mastered it. Say "teach me X" or "quiz me on X" |
 | `untangle-codebase` | Refactors a whole codebase so pieces that change together sit together. Long and thorough, so it only runs when you call it |
 
 The package now also includes `claude`, `cleanup`, `doi2bib`, `edison`, `handoff`,
@@ -76,6 +77,8 @@ To review a repo's PRs automatically, copy [`.github/workflows/thermo-nuclear.ym
 `cluster-instructions`, `thermo-nuclear-code-quality-review` and `grill-me` were copied from [softnanolab/softnano-plugins](https://github.com/softnanolab/softnano-plugins) at commit `fa058b6`. `thermo-nuclear-code-quality-review` and `grill-me` are unchanged. `cluster-instructions` adds dragonair and removes SoftNano's own accounts, aliases and workstation.
 
 `untangle-codebase` is by Maze, from [caldoai/skills](https://github.com/caldoai/skills/blob/main/skills/untangle-codebase/SKILL.md) at commit `f3cf477`, under the MIT licence in its folder. It's unchanged apart from `agents/openai.yaml`, which stops Codex loading it automatically.
+
+`socratic-tutor` is by Jane Street, from [janestreet/agent_skills](https://github.com/janestreet/agent_skills/tree/main/socratic-tutor) at commit `469868f`, under the MIT licence in its folder. It's unchanged.
 
 ## Moving from Softnano
 

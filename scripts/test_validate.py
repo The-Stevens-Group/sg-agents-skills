@@ -36,5 +36,13 @@ class VersionPolicyTests(unittest.TestCase):
                     self.assertEqual(not validate.failures, accepted)
 
 
+
+class FrontmatterTests(unittest.TestCase):
+    def test_quoted_and_plain_values_read_the_same(self):
+        for line in ('name: socratic-tutor', 'name: "socratic-tutor"', "name: 'socratic-tutor'"):
+            with self.subTest(line=line):
+                self.assertEqual(validate.frontmatter(f"---\n{line}\n---\n")["name"], "socratic-tutor")
+
+
 if __name__ == "__main__":
     unittest.main()
